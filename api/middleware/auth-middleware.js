@@ -1,6 +1,7 @@
 const Users = require('../auth/auth-model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const secrets = require('../secretsConfig')
 
 const checkRegisterPayload = (req, res, next) => {
     const {username, password} = req.body
@@ -12,7 +13,7 @@ const checkRegisterPayload = (req, res, next) => {
                 if(user){
                     next({status: 400, message: 'username taken'})
                 } else {
-                    password = bcrypt.hashSync(password, 8)
+                    req.body.password = bcrypt.hashSync(password, 8)
                     next()
                 }
             })
